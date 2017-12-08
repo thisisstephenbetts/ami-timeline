@@ -28,7 +28,7 @@ class N4JAMITimeline:
 
                     event_uuid = uuid.uuid4()
 
-                    for property in 'event', 'full_note', 'media':
+                    for property in 'event', 'full_event', 'full_note', 'media':
                         if event[property] is not None:
                             event[property] = event[property].replace('"', '\\"').replace("'", "\\'")
 
@@ -40,6 +40,7 @@ class N4JAMITimeline:
                                 event_start: '{event['event_start']}',
                                 event_end: '{event['event_end']}',
                                 event: '{event['event']}',
+                                full_event: '{event['full_event']}',
                                 media: '{event['media']}',
                                 full_note: '{event['full_note']}',
                                 sequence: '{sequence}'

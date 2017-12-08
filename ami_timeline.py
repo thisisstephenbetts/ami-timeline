@@ -1,6 +1,7 @@
 from collections import defaultdict
 
-from flask import Flask
+from flask import Flask, Response
+import requests
 
 from n4j_ami_timeline import N4JAMITimeline
 
@@ -8,18 +9,24 @@ from n4j_ami_timeline import N4JAMITimeline
 app = Flask(__name__)
 
 @app.route('/item/<bnumber>')
-def show_user_profile(bnumber):
+def events_for_bnumber(bnumber):
+    resp = Response(events_html(bnumber))
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
+
+def events_html(bnumber):
 
     n4j_wrapper = N4JAMITimeline()
 
     records = n4j_wrapper.find_timeline_events(bnumber)
 
-    results = ''
+    results = '<ul>'
     for r in records:
         event = r['event']
-        results += f"{event['event_type']}: {event['event']} ({event['event_start']})<br>"
+        results += f"<li><strong>{event['event_type']} on {event['event_start']}:</strong> <br>&nbsp;&nbsp;{event['full_event']}</li>"
 
-    return f'data for {bnumber}: <br>{results}'
+    results += '</ul>'
+    return f'<div style="margin-top: 2em">{results}</div>'
 
 
 @app.route('/')
