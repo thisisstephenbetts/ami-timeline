@@ -54,4 +54,4 @@ class N4JAMITimeline:
 
         with self.driver.session() as session:
             with session.begin_transaction() as tx:
-                return tx.run(f"MATCH (item:NYPLItem {{bnumber: '{bnumber}'}})-[:EVENTS]->(event:TimelineEvent) RETURN event order by event.sequence").records()
+                return tx.run(f"MATCH (item:NYPLItem {{bnumber: '{bnumber}'}})-[:EVENTS]->(event:TimelineEvent) RETURN event order by event.event_start").records()
